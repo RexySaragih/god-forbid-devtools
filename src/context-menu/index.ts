@@ -35,6 +35,7 @@ import {
   hasNonEmptySelection,
   isEditable,
   isPasswordField,
+  restoreSelection,
 } from "./selection";
 import { injectStyles, removeStyles } from "./styles";
 import { appendToBody, removeNode } from "../env/dom";
@@ -161,6 +162,17 @@ export function createContextMenuGuard(
 
     positionMenu(handle, ctx.x, ctx.y);
 
+    // Re-apply the captured selection so the host page's text highlight stays
+    // visibly active after our menu mounts. Without this, browsers (especially
+    // Chrome) render the selection as "inactive" and the highlight fades.
+    if (ctx.selection.kind === "range") {
+      restoreSelection(ctx.selection);
+    }
+
+    // Mark body so our CSS can keep the inactive selection visible.
+    const doc = getDocument();
+    doc?.body?.classList.add("gfd-menu-open");
+
     keyboard = createKeyboardController(handle.buttons, {
       onActivate: (id) => {
         void invokeAction(id);
@@ -230,6 +242,8 @@ export function createContextMenuGuard(
     detachTeardownListeners();
     keyboard = null;
     openContext = null;
+    const doc = getDocument();
+    doc?.body?.classList.remove("gfd-menu-open");
     if (menuHandle) {
       removeNode(menuHandle.root);
     }

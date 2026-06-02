@@ -91,6 +91,10 @@ export function buildMenu(config: MenuRenderConfig): MenuHandle | null {
   root.tabIndex = -1;
   root.style.zIndex = String(config.zIndex);
   root.style.visibility = "hidden";
+  // Prevent focus theft / selection clearing when user clicks anywhere in the
+  // menu (including padding/separators). Without this, the page loses focus
+  // and the highlighted text selection visually fades away.
+  root.addEventListener("mousedown", (e) => e.preventDefault());
 
   const buttons = new Map<ContextMenuItemId, HTMLButtonElement>();
   const shortcuts = getShortcuts();

@@ -265,6 +265,20 @@ const CSS = `
     transition: none;
   }
 }
+
+/*
+ * Keep the host page's text selection visible while our menu is open.
+ *
+ * When a DOM-based context menu mounts, the browser renders the page's
+ * selection as "inactive" and dims the highlight. While our guard sets
+ * the .gfd-menu-open class on <body>, we keep the highlight visible.
+ */
+body.gfd-menu-open ::selection {
+  background-color: rgba(0, 122, 255, 0.28);
+}
+body.gfd-menu-open ::-moz-selection {
+  background-color: rgba(0, 122, 255, 0.28);
+}
 `;
 
 let injectedStyleNode: HTMLStyleElement | null = null;
