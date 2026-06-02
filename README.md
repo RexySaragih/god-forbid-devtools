@@ -33,12 +33,6 @@ bun add @rexymayderio/god-forbid-devtools
 npm install @rexymayderio/god-forbid-devtools
 ```
 
-Or install directly from git:
-
-```bash
-bun add git+ssh://git@github.com/rexymayderio/god-forbid-devtools.git#<sha>
-```
-
 `prepare` runs `tsup` automatically on install so consumers get a built `dist/`.
 
 ## Quick start — Protection orchestrator
