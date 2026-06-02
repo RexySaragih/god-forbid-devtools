@@ -1,0 +1,21 @@
+node_modules/
+dist/
+coverage/
+.turbo/
+.cache/
+
+# Lockfiles other than bun's
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Editors / OS
+.DS_Store
+*.log
+.env
+.env.local
+.kiro
+.kirograph
+
+# Test artefacts
+*.tsbuildinfo
