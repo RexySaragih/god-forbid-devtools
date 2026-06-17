@@ -1,6 +1,6 @@
 {
   "name": "@rexymayderio/god-forbid-devtools",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": false,
   "description": "Tree-shakable, browser-only anti-tamper toolkit: DevTools detector + context-menu guard + keyboard shortcut guard.",
   "type": "module",

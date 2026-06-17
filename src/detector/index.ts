@@ -18,23 +18,26 @@ import type {
 import { getWindow, inBrowser } from "../env/browser";
 import {
   windowSizeChecker,
-  devtoolsFormattersChecker,
   performanceChecker,
   erudaChecker,
-  consoleLogTrapChecker,
 } from "./checkers";
 
 const DEFAULT_POLL_INTERVAL_MS = 500;
-const DEFAULT_CONFIRMATION_POLLS = 1;
+// Two confirmation polls = ~1s of sustained positive signal before we flip.
+// Cheap insurance against transient browser/OS hiccups (window resize edge
+// cases, brief outerWidth/innerHeight deltas during native UI animations,
+// etc.) that a single-poll confirmation would treat as a real positive.
+const DEFAULT_CONFIRMATION_POLLS = 2;
 
 function defaultCheckers(): Checker[] {
-  return [
-    windowSizeChecker,
-    devtoolsFormattersChecker,
-    erudaChecker,
-    consoleLogTrapChecker,
-    performanceChecker,
-  ];
+  // Note: `consoleLogTrapChecker` and `devtoolsFormattersChecker` are
+  // intentionally NOT included here. Both rely on Chromium's async console
+  // serialisation hooks, which can be invoked by browser extensions, the
+  // native context menu, and other unrelated paths — producing false
+  // positives like "right-click on a link triggers DevTools detected".
+  // They remain exported for callers who explicitly opt in via the
+  // `checkers` option.
+  return [windowSizeChecker, erudaChecker, performanceChecker];
 }
 
 export function createDetector(options: DetectorOptions = {}): Detector {

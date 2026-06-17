@@ -24,9 +24,11 @@ describe("Detect when DevTools closes", () => {
 
       // When
       detector.start();
-      await flush();
+      // Two flushes to confirm "open" under the default `confirmationPolls: 2`.
+      await flush(2);
       checker.setOpen(false);
-      await flush();
+      // Two more to confirm "closed".
+      await flush(2);
       // Extra polls while still closed shouldn't refire.
       await flush(3);
 

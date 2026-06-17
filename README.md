@@ -360,6 +360,16 @@ Tests follow a behavioural-testing approach: file names describe behaviours
 limited to I/O boundaries (`window`, `document`, `navigator.clipboard`,
 `document.execCommand`).
 
+## Changelog
+
+### 0.1.2
+
+- **Fix**: Right-clicking a link (e.g. "Open in new tab") no longer triggers a false-positive devtools detection. The `console-log-trap` and `devtools-formatters` checkers previously latched their `triggered` flag permanently after any one-off getter invocation. They now reset before each probe so only synchronous triggers during the active `console.log` call count.
+
+### 0.1.1
+
+- Initial release.
+
 ## License
 
 MIT © Rexy Mayderio

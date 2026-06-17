@@ -31,6 +31,12 @@ export function createConsoleLogTrapChecker(): Checker {
     category: "cheap",
     isEnabled: () => Boolean(getWindow()),
     isOpen: () => {
+      // Reset before each probe so we only detect getter invocations that
+      // happen synchronously during the current `console.log` call. Without
+      // this, any one-off trigger (e.g. a right-click "open in new tab"
+      // briefly exercising console serialisation) would latch the flag and
+      // produce a permanent false-positive.
+      triggered = false;
       const consoleRef = getConsole();
       consoleRef.log(trap);
       return triggered;

@@ -65,6 +65,12 @@ export function createDevtoolsFormattersChecker(): Checker {
       if (!w) return false;
       install(w);
 
+      // Reset before each probe — only a synchronous trigger (DevTools
+      // actually rendering the formatter) counts. Prevents permanent
+      // false-positives from transient browser behaviour (e.g. right-click
+      // "Open link in new tab" briefly serialising console objects).
+      triggered = false;
+
       const probe = (w as Window & { __gfdFormatterProbe?: object })
         .__gfdFormatterProbe;
       if (probe) {

@@ -32,7 +32,9 @@ describe("Detect when DevTools opens", () => {
       detector.start();
       await flush();
       checker.setOpen(true);
-      await flush();
+      // Two flushes — default `confirmationPolls` is 2 (debounces transient
+      // browser anomalies). The detector flips after two consecutive positives.
+      await flush(2);
 
       // Then
       expect(detector.isOpen).toBe(true);
